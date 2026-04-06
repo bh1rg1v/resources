@@ -1,0 +1,15 @@
+D:\github\resources\.NET\bin\Debug\net10.0\.NET.exe
+D:\github\resources\.NET\bin\Debug\net10.0\.NET.deps.json
+D:\github\resources\.NET\bin\Debug\net10.0\.NET.runtimeconfig.json
+D:\github\resources\.NET\bin\Debug\net10.0\.NET.dll
+D:\github\resources\.NET\bin\Debug\net10.0\.NET.pdb
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.GeneratedMSBuildEditorConfig.editorconfig
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.AssemblyInfoInputs.cache
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.AssemblyInfo.cs
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.csproj.CoreCompileInputs.cache
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.sourcelink.json
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.dll
+D:\github\resources\.NET\obj\Debug\net10.0\refint\.NET.dll
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.pdb
+D:\github\resources\.NET\obj\Debug\net10.0\.NET.genruntimeconfig.cache
+D:\github\resources\.NET\obj\Debug\net10.0\ref\.NET.dll
