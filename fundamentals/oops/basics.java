@@ -329,4 +329,39 @@ Interface
     in abstract, class we can't be inherting from 2 classes (multiple inheritance), if both of the parent classes has 2 same functions, we have problem there.
     but in interface, both methods from parent classes are overridden in the child class, allowing multiple inheritance.
 
+    what is the use of interface when we are required to override every method in the child class ?
+
+*/
+
+/*
+
+object class
+
+    all of the classes in java implicity inherits from class Object
+
+    if a class A is defined, the class extends from class object everytime, implicitly (automatically)
+
+    tostring, equal, clone(s)... all of these methods are included in object class
+
+    object class is the root of every class in java
+
+*/
+
+/*
+
+wrapper class
+
+    1) primitive data types uesd to be reason that java is not 100% oo-programming
+    2) so these primitive datatypes are wrapped into class to make it 100% oo-programming
+
+    int     ->  Integer
+    char    ->  Character
+    float   ->  Float
+    double  ->  Double
+    long    ->  Long
+
+    starting with smallcase, it is not a class
+    starting with capital case, it is a class
+    
+
 */
