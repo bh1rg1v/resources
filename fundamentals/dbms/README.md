@@ -853,3 +853,192 @@ A **Cursor** is a database object that allows a program or stored procedure to r
 * **Consistency:** Data remains in a valid state adhering to constraints before and after transactions.
 * **Isolation:** Concurrent transactions execute without interfering with each other.
 * **Durability:** Once committed, changes survive system failures.
+
+---
+
+## SQL & DBMS Interview Queries
+
+### 1. Find the second highest salary from an employee table.
+```sql
+SELECT MAX(salary) AS SecondHighestSalary
+FROM employees
+WHERE salary < (SELECT MAX(salary) FROM employees);
+```
+
+### 2. Find the Nth highest salary.
+```sql
+SELECT DISTINCT salary
+FROM (
+    SELECT salary, DENSE_RANK() OVER (ORDER BY salary DESC) AS rnk
+    FROM employees
+) t
+WHERE rnk = N;
+```
+
+### 3. Find the highest salary in each department.
+```sql
+SELECT department_id, MAX(salary) AS max_salary
+FROM employees
+GROUP BY department_id;
+```
+
+### 4. Find the second highest salary in each department.
+```sql
+SELECT department_id, salary AS second_highest_salary
+FROM (
+    SELECT department_id, salary,
+           DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rnk
+    FROM employees
+) t
+WHERE rnk = 2;
+```
+
+### 5. Find employees whose salary is greater than the average salary.
+```sql
+SELECT employee_id, first_name, salary
+FROM employees
+WHERE salary > (SELECT AVG(salary) FROM employees);
+```
+
+### 6. Find employees whose salary is greater than their department's average salary.
+```sql
+SELECT e.employee_id, e.first_name, e.department_id, e.salary
+FROM employees e
+WHERE e.salary > (
+    SELECT AVG(salary)
+    FROM employees
+    WHERE department_id = e.department_id
+);
+```
+
+### 7. Find duplicate records in a table.
+```sql
+SELECT email, COUNT(*) AS duplicate_count
+FROM employees
+GROUP BY email
+HAVING COUNT(*) > 1;
+```
+
+### 8. Find the number of employees in each department.
+```sql
+SELECT department_id, COUNT(*) AS total_employees
+FROM employees
+GROUP BY department_id;
+```
+
+### 9. Find departments having more than N employees.
+```sql
+SELECT department_id, COUNT(*) AS num_employees
+FROM employees
+GROUP BY department_id
+HAVING COUNT(*) > N;
+```
+
+### 10. Find employees who don't have a department.
+```sql
+SELECT employee_id, first_name, last_name
+FROM employees
+WHERE department_id IS NULL;
+```
+
+### 11. Find employees who have the same salary.
+```sql
+SELECT employee_id, first_name, salary
+FROM employees
+WHERE salary IN (
+    SELECT salary
+    FROM employees
+    GROUP BY salary
+    HAVING COUNT(*) > 1
+)
+ORDER BY salary;
+```
+
+### 12. Find the top 3 highest-paid employees.
+```sql
+SELECT employee_id, first_name, salary
+FROM employees
+ORDER BY salary DESC
+LIMIT 3;
+```
+
+### 13. Find the top 3 highest-paid employees in each department.
+```sql
+SELECT department_id, employee_id, first_name, salary
+FROM (
+    SELECT department_id, employee_id, first_name, salary,
+           DENSE_RANK() OVER (PARTITION BY department_id ORDER BY salary DESC) AS rnk
+    FROM employees
+) t
+WHERE rnk <= 3;
+```
+
+### 14. Find the Nth record in each group.
+```sql
+SELECT *
+FROM (
+    SELECT *,
+           ROW_NUMBER() OVER (PARTITION BY department_id ORDER BY employee_id) AS row_num
+    FROM employees
+) t
+WHERE row_num = N;
+```
+
+### 15. Find employees who joined in a particular year/month.
+```sql
+SELECT employee_id, first_name, hire_date
+FROM employees
+WHERE EXTRACT(YEAR FROM hire_date) = 2024
+  AND EXTRACT(MONTH FROM hire_date) = 5;
+```
+
+### 16. Find employees who joined before their manager.
+```sql
+SELECT e.employee_id AS emp_id, e.first_name AS emp_name, e.hire_date AS emp_hire_date,
+       m.employee_id AS mgr_id, m.first_name AS mgr_name, m.hire_date AS mgr_hire_date
+FROM employees e
+JOIN employees m ON e.manager_id = m.employee_id
+WHERE e.hire_date < m.hire_date;
+```
+
+### 17. Find the maximum salary without using MAX().
+```sql
+SELECT DISTINCT salary
+FROM employees e1
+WHERE NOT EXISTS (
+    SELECT 1 FROM employees e2 WHERE e2.salary > e1.salary
+);
+```
+
+### 18. Find records that exist in Table A but not Table B.
+```sql
+SELECT a.*
+FROM TableA a
+LEFT JOIN TableB b ON a.id = b.id
+WHERE b.id IS NULL;
+```
+
+### 19. Find the department with the highest average salary.
+```sql
+SELECT department_id, AVG(salary) AS avg_salary
+FROM employees
+GROUP BY department_id
+ORDER BY avg_salary DESC
+LIMIT 1;
+```
+
+### 20. Find consecutive/repeated records (e.g., users who logged in 3 consecutive days).
+```sql
+WITH RankedLogins AS (
+    SELECT user_id, login_date,
+           LAG(login_date, 1) OVER (PARTITION BY user_id ORDER BY login_date) AS prev_1,
+           LAG(login_date, 2) OVER (PARTITION BY user_id ORDER BY login_date) AS prev_2
+    FROM (SELECT DISTINCT user_id, login_date FROM user_logins) t
+)
+SELECT DISTINCT user_id
+FROM RankedLogins
+WHERE login_date = prev_1 + INTERVAL '1 day'
+  AND prev_1 = prev_2 + INTERVAL '1 day';
+```
+
+
